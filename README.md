@@ -4,6 +4,8 @@
   - append with human readable names to the Requests;
   - make it possible through the configuration to use different instance of the
     API - e.g. api-qa-2.adjust.com
+  - verbose output
+  - implement at least `app_token` in `~/.adjustrc` and maybe both
 
 ## Adjust Command Line Utility
 

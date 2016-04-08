@@ -25,6 +25,10 @@ var KPIsFlags = []cli.Flag{
 		Value: "network,campaign",
 		Usage: "Grouping for the data, e.g. apps,networks,campaigns",
 	},
+	cli.BoolFlag{
+		Name:  "verbose",
+		Usage: "Print additional information when running the requests.",
+	},
 }
 
 var Commands = []cli.Command{

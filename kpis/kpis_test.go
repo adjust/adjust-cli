@@ -6,10 +6,11 @@ import (
 )
 
 func fail(t *testing.T, headline string, actual string, expected string) {
-	t.Error(headline, fmt.Sprintf("\nActual:   %s\n", actual), fmt.Sprintf("\nExpected: %s\n", expected))
+	t.Error(headline, fmt.Sprintf("\nActual: %s\n", actual), fmt.Sprintf("\nExpect: %s\n", expected))
 }
 
 type URLTestCase struct {
+	Endpoint string
 	Params   Params
 	Expected string
 }
@@ -17,6 +18,14 @@ type URLTestCase struct {
 func TestURL(t *testing.T) {
 	cases := []URLTestCase{
 		{
+			"cohorts",
+			Params{
+				AppTokens: []string{"abcdef"},
+			},
+			"https://api.adjust.com/kpis/v1/cohorts/abcdef.csv",
+		},
+		{
+			"deliverables",
 			Params{
 				AppTokens: []string{"abcdef"},
 				KPIs:      []string{"installs", "sessions"},
@@ -24,6 +33,7 @@ func TestURL(t *testing.T) {
 			"https://api.adjust.com/kpis/v1/abcdef.csv?kpis=installs%2Csessions",
 		},
 		{
+			"deliverables",
 			Params{
 				AppTokens: []string{"abcdef"},
 				Trackers:  []string{"my-token"},
@@ -32,6 +42,7 @@ func TestURL(t *testing.T) {
 			"https://api.adjust.com/kpis/v1/abcdef/trackers/my-token.csv?kpis=installs",
 		},
 		{
+			"deliverables",
 			Params{
 				AppTokens: []string{"abcdef", "123456"},
 				KPIs:      []string{"installs"},
@@ -39,6 +50,7 @@ func TestURL(t *testing.T) {
 			"https://api.adjust.com/kpis/v1.csv?app_tokens=abcdef%2C123456&kpis=installs",
 		},
 		{
+			"deliverables",
 			Params{
 				AppTokens:   []string{"abcdef", "123456"},
 				Trackers:    []string{"my-tracker"},
@@ -53,7 +65,7 @@ func TestURL(t *testing.T) {
 	}
 
 	for _, tc := range cases {
-		actual := tc.Params.NewRequest().URL.String()
+		actual := tc.Params.NewRequest(tc.Endpoint).URL.String()
 
 		if actual != tc.Expected {
 			fail(t, "URL test failed:", actual, tc.Expected)
@@ -63,7 +75,7 @@ func TestURL(t *testing.T) {
 
 func TestHeader(t *testing.T) {
 	params := Params{UserToken: "my-user-token"}
-	req := params.NewRequest()
+	req := params.NewRequest("deliverables")
 
 	acceptHeader := "text/csv"
 	if v := req.Header.Get("Accept"); v != acceptHeader {

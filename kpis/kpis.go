@@ -35,8 +35,8 @@ func NewParams(session *adjust.Session, context *cli.Context) (*Params, error) {
 	return &res, nil
 }
 
-func (params *Params) NewRequest() *http.Request {
-	req, err := http.NewRequest("GET", urlFromParams("deliverables", params).String(), nil)
+func (params *Params) NewRequest(endpoint string) *http.Request {
+	req, err := http.NewRequest("GET", urlFromParams(endpoint, params).String(), nil)
 	if err != nil {
 		adjust.Fail("Failed to build URL.")
 	}
@@ -54,7 +54,7 @@ func urlFromParams(endpoint string, params *Params) *url.URL {
 	q := url.Values{}
 
 	if endpoint == "cohorts" {
-		path = fmt.Sprintf("%s/cohorts", path, params.AppTokens[0])
+		path = fmt.Sprintf("%s/cohorts", path)
 	}
 
 	if len(params.AppTokens) == 1 {

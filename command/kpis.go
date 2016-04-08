@@ -13,6 +13,14 @@ import (
 )
 
 func CmdDeliverables(c *cli.Context) {
+	performKPIServiceRequest("deliverables", c)
+}
+
+func CmdCohorts(c *cli.Context) {
+	performKPIServiceRequest("cohorts", c)
+}
+
+func performKPIServiceRequest(endoint string, c *cli.Context) {
 	session, err := adjust.ReadSession(adjust.DefaultConfigFilename)
 	if err != nil {
 		adjust.Fail("You need to be logged in first.")
@@ -25,8 +33,10 @@ func CmdDeliverables(c *cli.Context) {
 
 	req := params.NewRequest()
 
-	fmt.Fprintf(os.Stderr, "URL: %s\n", req.URL.String())
-	fmt.Fprintf(os.Stderr, "\n\n")
+	if c.Bool("verbose") {
+		fmt.Fprintf(os.Stderr, "Requesting URL: %s\n", req.URL.String())
+		fmt.Fprintf(os.Stderr, "\n\n")
+	}
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -44,7 +54,4 @@ func CmdDeliverables(c *cli.Context) {
 	//	table.Append(v)
 	// }
 	table.Render() // Send output
-}
-
-func CmdCohorts(c *cli.Context) {
 }
