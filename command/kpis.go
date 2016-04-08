@@ -20,7 +20,7 @@ func CmdCohorts(c *cli.Context) {
 	performKPIServiceRequest("cohorts", c)
 }
 
-func performKPIServiceRequest(endoint string, c *cli.Context) {
+func performKPIServiceRequest(endpoint string, c *cli.Context) {
 	session, err := adjust.ReadSession(adjust.DefaultConfigFilename)
 	if err != nil {
 		adjust.Fail("You need to be logged in first.")
@@ -31,7 +31,7 @@ func performKPIServiceRequest(endoint string, c *cli.Context) {
 		adjust.Fail("Failed to build params.")
 	}
 
-	req := params.NewRequest()
+	req := params.NewRequest(endpoint)
 
 	if c.Bool("verbose") {
 		fmt.Fprintf(os.Stderr, "Requesting URL: %s\n", req.URL.String())

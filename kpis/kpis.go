@@ -24,15 +24,18 @@ type Params struct {
 }
 
 func NewParams(session *adjust.Session, context *cli.Context) (*Params, error) {
-	res := Params{
-		UserToken: session.UserToken,
-		AppTokens: strings.Split(context.String("app_tokens"), ","),
-		KPIs:      strings.Split(context.String("kpis"), ","),
-		Grouping:  strings.Split(context.String("grouping"), ","),
-		// TODO
+	res := &Params{
+		UserToken:   session.UserToken,
+		AppTokens:   strings.Split(context.String("app_tokens"), ","),
+		Trackers:    strings.Split(context.String("trackers"), ","),
+		KPIs:        strings.Split(context.String("kpis"), ","),
+		OSNames:     strings.Split(context.String("os_names"), ","),
+		Countries:   strings.Split(context.String("countries"), ","),
+		DeviceTypes: strings.Split(context.String("device_types"), ","),
+		Grouping:    strings.Split(context.String("grouping"), ","),
 	}
 
-	return &res, nil
+	return res, nil
 }
 
 func (params *Params) NewRequest(endpoint string) *http.Request {
@@ -57,10 +60,10 @@ func urlFromParams(endpoint string, params *Params) *url.URL {
 		path = fmt.Sprintf("%s/cohorts", path)
 	}
 
-	if len(params.AppTokens) == 1 {
+	if len(params.AppTokens) == 1 && params.AppTokens[0] != "" {
 		path = fmt.Sprintf("%s/%s", path, params.AppTokens[0])
 
-		if len(params.Trackers) == 1 {
+		if len(params.Trackers) == 1 && params.Trackers[0] != "" {
 			path = fmt.Sprintf("%s/trackers/%s", path, params.Trackers[0])
 			appendTrackerFilters = false
 		}
@@ -88,7 +91,7 @@ func urlFromParams(endpoint string, params *Params) *url.URL {
 }
 
 func appendParam(q url.Values, name string, values []string) {
-	if len(values) > 0 {
+	if len(values) > 0 && values[0] != "" {
 		q.Add(name, strings.Join(values, ","))
 	}
 }

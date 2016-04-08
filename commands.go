@@ -12,18 +12,34 @@ var GlobalFlags = []cli.Flag{}
 
 var KPIsFlags = []cli.Flag{
 	cli.StringFlag{
+		Name:  "app_tokens, a",
+		Usage: "The app token for the request",
+	},
+	cli.StringFlag{
+		Name:  "trackers, t",
+		Usage: "If a tracker token is given, tracker filtering will be applied on the request",
+	},
+	cli.StringFlag{
 		Name:  "kpis, k",
 		Value: "installs,clicks,sessions",
 		Usage: "The KPIs for the request.",
 	},
 	cli.StringFlag{
-		Name:  "app_tokens, a",
-		Usage: "The app token for the request",
+		Name:  "os_names, o",
+		Usage: "OS Name filtering. Example: `--os_names 'ios,android'`",
+	},
+	cli.StringFlag{
+		Name:  "countries, c",
+		Usage: "Country filtering using ISO Alpha 2 country codes. Example: `--countries 'us,fr'`",
+	},
+	cli.StringFlag{
+		Name:  "device_types, d",
+		Usage: "Device Type filtering. Example: `--device_types phone`",
 	},
 	cli.StringFlag{
 		Name:  "grouping, g",
 		Value: "network,campaign",
-		Usage: "Grouping for the data, e.g. apps,networks,campaigns",
+		Usage: "Grouping for the data. Example: `--grouping apps,networks,campaigns`",
 	},
 	cli.BoolFlag{
 		Name:  "verbose",
