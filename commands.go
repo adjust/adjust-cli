@@ -20,11 +20,6 @@ var KPIsFlags = []cli.Flag{
 		Usage: "If a tracker token is given, tracker filtering will be applied on the request",
 	},
 	cli.StringFlag{
-		Name:  "kpis, k",
-		Value: "installs,clicks,sessions",
-		Usage: "The KPIs for the request.",
-	},
-	cli.StringFlag{
 		Name:  "os_names, o",
 		Usage: "OS Name filtering. Example: `--os_names 'ios,android'`",
 	},
@@ -47,6 +42,18 @@ var KPIsFlags = []cli.Flag{
 	},
 }
 
+var DeliverablesKPIsFlag = cli.StringFlag{
+	Name:  "kpis, k",
+	Value: "installs,clicks,sessions",
+	Usage: "The KPIs for the request.",
+}
+
+var CohortsKPIsFlag = cli.StringFlag{
+	Name:  "kpis, k",
+	Value: "retained_users",
+	Usage: "The KPIs for the request.",
+}
+
 var Commands = []cli.Command{
 	{
 		Name:   "login",
@@ -64,13 +71,13 @@ var Commands = []cli.Command{
 		Name:   "deliverables",
 		Usage:  "installs, clicks, sessions, events etc. data.",
 		Action: command.CmdDeliverables,
-		Flags:  KPIsFlags,
+		Flags:  append(KPIsFlags, DeliverablesKPIsFlag),
 	},
 	{
 		Name:   "cohorts",
 		Usage:  "get cohorts data.",
 		Action: command.CmdCohorts,
-		Flags:  KPIsFlags,
+		Flags:  append(KPIsFlags, CohortsKPIsFlag),
 	},
 }
 

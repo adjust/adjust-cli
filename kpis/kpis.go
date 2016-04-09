@@ -56,10 +56,6 @@ func urlFromParams(endpoint string, params *Params) *url.URL {
 	appendTrackerFilters := true
 	q := url.Values{}
 
-	if endpoint == "cohorts" {
-		path = fmt.Sprintf("%s/cohorts", path)
-	}
-
 	if len(params.AppTokens) == 1 && params.AppTokens[0] != "" {
 		path = fmt.Sprintf("%s/%s", path, params.AppTokens[0])
 
@@ -69,6 +65,10 @@ func urlFromParams(endpoint string, params *Params) *url.URL {
 		}
 	} else {
 		q.Add("app_tokens", strings.Join(params.AppTokens, ","))
+	}
+
+	if endpoint == "cohorts" {
+		path = fmt.Sprintf("%s/cohorts", path)
 	}
 	path = fmt.Sprintf("%s.csv", path)
 

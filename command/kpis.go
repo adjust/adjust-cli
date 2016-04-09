@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"net/http"
+	"net/url"
 	"os"
 
 	"github.com/adjust/adjust-cli/adjust"
@@ -33,8 +34,13 @@ func performKPIServiceRequest(endpoint string, c *cli.Context) {
 
 	req := params.NewRequest(endpoint)
 
+	unescaped, err := url.QueryUnescape(req.URL.String())
+	if err != nil {
+		adjust.Fail("Failed to unescape url.")
+	}
+
 	if c.Bool("verbose") {
-		fmt.Fprintf(os.Stderr, "Requesting URL: %s\n", req.URL.String())
+		fmt.Fprintf(os.Stderr, "Requesting URL: %s\n", unescaped)
 		fmt.Fprintf(os.Stderr, "\n\n")
 	}
 

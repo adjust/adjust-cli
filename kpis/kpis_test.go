@@ -22,7 +22,15 @@ func TestURL(t *testing.T) {
 			Params{
 				AppTokens: []string{"abcdef"},
 			},
-			"https://api.adjust.com/kpis/v1/cohorts/abcdef.csv",
+			"https://api.adjust.com/kpis/v1/abcdef/cohorts.csv",
+		},
+		{
+			"cohorts",
+			Params{
+				AppTokens: []string{"abcdef"},
+				Trackers:  []string{"12345"},
+			},
+			"https://api.adjust.com/kpis/v1/abcdef/trackers/12345/cohorts.csv",
 		},
 		{
 			"deliverables",
