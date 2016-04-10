@@ -3,6 +3,7 @@ package command
 import (
 	"encoding/csv"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -39,16 +40,26 @@ func performKPIServiceRequest(endpoint string, c *cli.Context) {
 		adjust.Fail("Failed to unescape url.")
 	}
 
-	if c.Bool("verbose") {
-		fmt.Fprintf(os.Stderr, "Requesting URL: %s\n", unescaped)
-		fmt.Fprintf(os.Stderr, "\n\n")
+	verbose := c.Bool("verbose")
+	if verbose {
+		adjust.Notify(fmt.Sprintf("Requesting URL: %s\n", unescaped))
 	}
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%#v", err)
+		if verbose {
+			adjust.Fail(err.Error())
+		} else {
+			adjust.Fail("Could not connect to the adjust API.")
+		}
 	}
-	// TODO check response code
+	defer res.Body.Close()
+
+	if verbose {
+		handleResponseVerbose(res)
+	} else {
+		handleResponse(res)
+	}
 
 	csvReader := csv.NewReader(res.Body)
 	table, err := tablewriter.NewCSVReader(os.Stdout, csvReader, true)
@@ -60,4 +71,41 @@ func performKPIServiceRequest(endpoint string, c *cli.Context) {
 	//	table.Append(v)
 	// }
 	table.Render() // Send output
+}
+
+func handleResponse(res *http.Response) {
+	if res.StatusCode >= 500 {
+		adjust.Fail("KPI Service error encountered.")
+	}
+
+	if res.StatusCode >= 400 {
+		text, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			adjust.Fail("Could not parse KPI Service response.")
+		}
+		adjust.Fail(string(text))
+	}
+
+	if res.StatusCode != 200 {
+		adjust.Fail("An error occurred connecting to adjust KPI service.")
+	}
+}
+
+func handleResponseVerbose(res *http.Response) {
+	if res.StatusCode >= 500 {
+		adjust.Fail(fmt.Sprintf("KPI Service error %s encountered", res.Status))
+	}
+
+	if res.StatusCode >= 400 {
+		adjust.Error(fmt.Sprintf("Incorrect request to the KPI Service: %s", res.Status))
+		text, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			adjust.Fail("Could not parse KPI Service response.")
+		}
+		adjust.Fail(string(text))
+	}
+
+	if res.StatusCode != 200 {
+		adjust.Fail(fmt.Sprintf("Unexpected HTTP response from the KPI Service: %s", res.Status))
+	}
 }

@@ -14,6 +14,14 @@ type Options struct {
 }
 
 func Fail(message string) {
-	fmt.Fprintf(os.Stderr, "Error: %s\n", message)
+	Error(message)
 	os.Exit(2)
+}
+
+func Error(message string) {
+	fmt.Fprintf(os.Stderr, "Error: %s\n", message)
+}
+
+func Notify(message string) {
+	fmt.Fprintf(os.Stdout, "%s\n", message)
 }
