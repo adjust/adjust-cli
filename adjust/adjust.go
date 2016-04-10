@@ -10,9 +10,6 @@ const URLHost = "api.adjust.com"
 
 var DefaultConfigFilename = fmt.Sprintf("%s/.adjustrc", os.Getenv("HOME"))
 
-type Options struct {
-}
-
 func Fail(message string) {
 	Error(message)
 	os.Exit(2)
