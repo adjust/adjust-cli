@@ -40,6 +40,14 @@ var KPIsFlags = []cli.Flag{
 		Name:  "verbose",
 		Usage: "Print additional information when running the requests.",
 	},
+	cli.StringFlag{
+		Name:  "start",
+		Usage: "The start date of the request period in format YYYY-MM-DD. Example: `--start 2015-01-01`.",
+	},
+	cli.StringFlag{
+		Name:  "end",
+		Usage: "The end date of the request period in format YYYY-MM-DD. Example: `--end 2015-01-31`.",
+	},
 }
 
 var DeliverablesKPIsFlag = cli.StringFlag{

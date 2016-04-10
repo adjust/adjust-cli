@@ -23,6 +23,8 @@ func CmdCohorts(c *cli.Context) {
 }
 
 func performKPIServiceRequest(endpoint string, c *cli.Context) {
+	validateContext(c)
+
 	session, err := adjust.ReadSession(adjust.DefaultConfigFilename)
 	if err != nil {
 		adjust.Fail("You need to be logged in first.")
@@ -107,5 +109,11 @@ func handleResponseVerbose(res *http.Response) {
 
 	if res.StatusCode != 200 {
 		adjust.Fail(fmt.Sprintf("Unexpected HTTP response from the KPI Service: %s", res.Status))
+	}
+}
+
+func validateContext(c *cli.Context) {
+	if c.String("start") == "" && c.String("end") != "" || c.String("start") != "" && c.String("end") == "" {
+		adjust.Fail("--start and --end dates must be both given.")
 	}
 }

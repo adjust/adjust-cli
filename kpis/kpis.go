@@ -20,6 +20,8 @@ type Params struct {
 	Countries   []string
 	DeviceTypes []string
 	Grouping    []string
+	Start       string
+	End         string
 	UserToken   string
 }
 
@@ -32,6 +34,8 @@ func NewParams(session *adjust.Session, context *cli.Context) (*Params, error) {
 		OSNames:     strings.Split(context.String("os_names"), ","),
 		Countries:   strings.Split(context.String("countries"), ","),
 		DeviceTypes: strings.Split(context.String("device_types"), ","),
+		Start:       context.String("start"),
+		End:         context.String("end"),
 		Grouping:    strings.Split(context.String("grouping"), ","),
 	}
 
@@ -77,6 +81,8 @@ func urlFromParams(endpoint string, params *Params) *url.URL {
 	appendParam(q, "os_names", params.OSNames)
 	appendParam(q, "countries", params.Countries)
 	appendParam(q, "device_types", params.DeviceTypes)
+	addParam(q, "start_date", params.Start)
+	addParam(q, "end_date", params.End)
 
 	if appendTrackerFilters {
 		appendParam(q, "tracker_filter", params.Trackers)
@@ -93,5 +99,11 @@ func urlFromParams(endpoint string, params *Params) *url.URL {
 func appendParam(q url.Values, name string, values []string) {
 	if len(values) > 0 && values[0] != "" {
 		q.Add(name, strings.Join(values, ","))
+	}
+}
+
+func addParam(q url.Values, name string, value string) {
+	if value != "" {
+		q.Add(name, value)
 	}
 }
