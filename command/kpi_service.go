@@ -1,6 +1,7 @@
 package command
 
 import (
+	"bufio"
 	"encoding/csv"
 	"fmt"
 	"io/ioutil"
@@ -61,6 +62,30 @@ func performKPIServiceRequest(endpoint string, c *cli.Context) {
 		handleResponseVerbose(res)
 	} else {
 		handleResponse(res)
+	}
+
+	if c.Bool("csv") || c.String("file") != "" {
+		body, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			adjust.Fail("Could not read CSV response from KPI Service.")
+		}
+
+		w := os.Stdout
+		if c.String("file") != "" {
+			w, err = os.OpenFile(c.String("file"), os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0666)
+			if err != nil {
+				adjust.Fail(err.Error())
+			}
+		}
+
+		buf := bufio.NewWriter(w)
+		_, err = buf.Write(body)
+		if err != nil {
+			adjust.Fail(err.Error())
+		}
+		buf.Flush()
+
+		adjust.Success()
 	}
 
 	csvReader := csv.NewReader(res.Body)

@@ -36,6 +36,14 @@ var KPIsFlags = []cli.Flag{
 		Value: "network,campaign",
 		Usage: "Grouping for the data. Example: `--grouping apps,networks,campaigns`",
 	},
+	cli.StringFlag{
+		Name:  "file",
+		Usage: "Save the response data to a file instead of printing it to the terminal.",
+	},
+	cli.BoolFlag{
+		Name:  "csv",
+		Usage: "Don't prettify the KPIs data, but output in CSV format.",
+	},
 	cli.BoolFlag{
 		Name:  "verbose",
 		Usage: "Print additional information when running the requests.",
