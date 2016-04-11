@@ -28,15 +28,15 @@ type Params struct {
 func NewParams(session *adjust.Session, context *cli.Context) (*Params, error) {
 	res := &Params{
 		UserToken:   session.UserToken,
-		AppTokens:   strings.Split(context.String("app_tokens"), ","),
-		Trackers:    strings.Split(context.String("trackers"), ","),
-		KPIs:        strings.Split(context.String("kpis"), ","),
-		OSNames:     strings.Split(context.String("os_names"), ","),
-		Countries:   strings.Split(context.String("countries"), ","),
-		DeviceTypes: strings.Split(context.String("device_types"), ","),
+		AppTokens:   commaSeparatedParam(context, "app_tokens"),
+		Trackers:    commaSeparatedParam(context, "trackers"),
+		KPIs:        commaSeparatedParam(context, "kpis"),
+		OSNames:     commaSeparatedParam(context, "os_names"),
+		Countries:   commaSeparatedParam(context, "countries"),
+		DeviceTypes: commaSeparatedParam(context, "device_types"),
 		Start:       context.String("start"),
 		End:         context.String("end"),
-		Grouping:    strings.Split(context.String("grouping"), ","),
+		Grouping:    commaSeparatedParam(context, "grouping"),
 	}
 
 	return res, nil
@@ -106,4 +106,12 @@ func addParam(q url.Values, name string, value string) {
 	if value != "" {
 		q.Add(name, value)
 	}
+}
+
+func commaSeparatedParam(context *cli.Context, paramName string) []string {
+	if context.String(paramName) == "" {
+		return nil
+	}
+
+	return strings.Split(context.String(paramName), ",")
 }

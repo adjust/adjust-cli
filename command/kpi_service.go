@@ -36,6 +36,10 @@ func performKPIServiceRequest(endpoint string, c *cli.Context) {
 		adjust.Fail("Failed to build params.")
 	}
 
+	if params.AppTokens == nil {
+		adjust.Fail("App token is required.")
+	}
+
 	req := params.NewRequest(endpoint)
 
 	unescaped, err := url.QueryUnescape(req.URL.String())
