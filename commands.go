@@ -10,6 +10,17 @@ import (
 
 var GlobalFlags = []cli.Flag{}
 
+var ConfigFlags = []cli.Flag{
+	cli.StringFlag{
+		Name:  "user_token, u",
+		Usage: "Your adjust user token, available from your Dashboard.",
+	},
+	// cli.StringFlag{
+	//      Name:  "app_tokens",
+	//      Usage: "A comma-separated list of your adjust app tokens.",
+	// },
+}
+
 var KPIsFlags = []cli.Flag{
 	cli.StringFlag{
 		Name:  "app_tokens, a",
@@ -72,16 +83,10 @@ var CohortsKPIsFlag = cli.StringFlag{
 
 var Commands = []cli.Command{
 	{
-		Name:   "login",
-		Usage:  "persists the user token in a config file.",
-		Action: command.CmdLogin,
-		Flags:  []cli.Flag{},
-	},
-	{
-		Name:   "logout",
-		Usage:  "erase all user data from config file.",
-		Action: command.CmdLogout,
-		Flags:  []cli.Flag{},
+		Name:   "config",
+		Usage:  "configure user_token, app_tokens and other options to adjust",
+		Action: command.CmdConfig,
+		Flags:  ConfigFlags,
 	},
 	{
 		Name:   "deliverables",
