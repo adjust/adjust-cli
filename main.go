@@ -15,7 +15,6 @@ func main() {
 	app.Flags = GlobalFlags
 	app.Commands = Commands
 	app.CommandNotFound = CommandNotFound
-	app.Action = DefaultAction
 
 	app.Run(os.Args)
 }

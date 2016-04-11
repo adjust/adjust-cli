@@ -97,10 +97,6 @@ var Commands = []cli.Command{
 	},
 }
 
-func DefaultAction(c *cli.Context) {
-	command.CmdDeliverables(c)
-}
-
 func CommandNotFound(c *cli.Context, command string) {
 	adjust.Fail(fmt.Sprintf("%s: '%s' is not a %s command. See '%s --help'.\n", c.App.Name, command, c.App.Name, c.App.Name))
 }
