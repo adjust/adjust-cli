@@ -48,7 +48,7 @@ var KPIsFlags = []cli.Flag{
 	},
 	cli.StringFlag{
 		Name:  "grouping, g",
-		Value: "network,campaign",
+		Value: "network",
 		Usage: "Grouping for the data. Example: `--grouping apps,networks,campaigns`",
 	},
 	cli.StringFlag{

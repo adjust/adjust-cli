@@ -25,10 +25,10 @@ type Params struct {
 	UserToken   string
 }
 
-func NewParams(config *adjust.Config, context *cli.Context) (*Params, error) {
+func NewParams(endpoint string, config *adjust.Config, context *cli.Context) (*Params, error) {
 	res := &Params{
-		UserToken:   session.UserToken,
-		AppTokens:   commaSeparatedParam(context, "app_tokens"),
+		UserToken:   config.UserToken,
+		AppTokens:   appTokens(endpoint, config, adjust.CommaSeparatedParam(context, "app_tokens")),
 		Trackers:    commaSeparatedParam(context, "trackers"),
 		KPIs:        commaSeparatedParam(context, "kpis"),
 		OSNames:     commaSeparatedParam(context, "os_names"),
@@ -40,6 +40,22 @@ func NewParams(config *adjust.Config, context *cli.Context) (*Params, error) {
 	}
 
 	return res, nil
+}
+
+func appTokens(endpoint string, config *adjust.Config, contextTokens []string) []string {
+	if contextTokens != nil {
+		return contextTokens
+	}
+
+	if config.AppTokens != nil && endpoint == "deliverables" {
+		return config.AppTokens
+	}
+
+	if config.AppToken != "" {
+		return []string{config.AppToken}
+	}
+
+	return nil
 }
 
 func (params *Params) NewRequest(endpoint string, scheme string, host string) *http.Request {

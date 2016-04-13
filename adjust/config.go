@@ -41,9 +41,9 @@ func getenv(key string, fallback string) string {
 }
 
 type Config struct {
-	UserToken string   `yaml:"user_token"`
-	AppTokens []string `yaml:"app_tokens"`
-	AppToken  string   `yaml:"app_token"`
+	UserToken string
+	AppTokens []string
+	AppToken  string
 }
 
 func NewConfig(c *cli.Context) *Config {

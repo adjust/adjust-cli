@@ -30,7 +30,7 @@ func performKPIServiceRequest(endpoint string, context *cli.Context) {
 
 	config := adjust.ReadConfig(settings.ConfigFilename)
 
-	params, err := kpis.NewParams(config, context)
+	params, err := kpis.NewParams(endpoint, config, context)
 	if err != nil {
 		adjust.Fail("Failed to build params.")
 	}
