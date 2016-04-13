@@ -15,10 +15,14 @@ var ConfigFlags = []cli.Flag{
 		Name:  "user_token, u",
 		Usage: "Your adjust user token, available from your Dashboard.",
 	},
-	// cli.StringFlag{
-	//      Name:  "app_tokens",
-	//      Usage: "A comma-separated list of your adjust app tokens.",
-	// },
+	cli.StringFlag{
+		Name:  "app_tokens",
+		Usage: "A comma-separated list of your adjust app tokens.",
+	},
+	cli.StringFlag{
+		Name:  "app_token",
+		Usage: "Setup an app token for your requests. If `--app_tokens` is also given, that takes precedence for all requests that support mutiple apps",
+	},
 }
 
 var KPIsFlags = []cli.Flag{

@@ -2,13 +2,12 @@ package adjust
 
 import (
 	"fmt"
+	"net/http"
 	"os"
+	"strings"
+
+	"github.com/codegangsta/cli"
 )
-
-const URLScheme = "https"
-const URLHost = "api.adjust.com"
-
-var DefaultConfigFilename = fmt.Sprintf("%s/.adjustrc", os.Getenv("HOME"))
 
 func Success() {
 	os.Exit(0)
@@ -29,4 +28,24 @@ func Notify(message string) {
 
 func Print(message string) {
 	fmt.Fprintf(os.Stdout, "%s", message)
+}
+
+func DefaultHeaders(userToken string) *http.Header {
+	res := http.Header{}
+	res.Add("Authorization", fmt.Sprintf("Token token=%s", userToken))
+	res.Add("X-Adjust-CLI", "1")
+
+	return &res
+}
+
+func CommaSeparatedParam(context *cli.Context, paramName string) []string {
+	return commaSeparatedParam(context, paramName)
+}
+
+func commaSeparatedParam(context *cli.Context, paramName string) []string {
+	if context.String(paramName) == "" {
+		return nil
+	}
+
+	return strings.Split(context.String(paramName), ",")
 }

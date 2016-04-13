@@ -23,15 +23,14 @@ func CmdCohorts(c *cli.Context) {
 	performKPIServiceRequest("cohorts", c)
 }
 
-func performKPIServiceRequest(endpoint string, c *cli.Context) {
-	validateContext(c)
+func performKPIServiceRequest(endpoint string, context *cli.Context) {
+	validateContext(context)
 
-	session, err := adjust.ReadSession(adjust.DefaultConfigFilename)
-	if err != nil {
-		adjust.Fail("You need to be logged in first.")
-	}
+	settings := adjust.NewSettings()
 
-	params, err := kpis.NewParams(session, c)
+	config := adjust.ReadConfig(settings.ConfigFilename)
+
+	params, err := kpis.NewParams(config, context)
 	if err != nil {
 		adjust.Fail("Failed to build params.")
 	}
@@ -40,14 +39,14 @@ func performKPIServiceRequest(endpoint string, c *cli.Context) {
 		adjust.Fail("App token is required.")
 	}
 
-	req := params.NewRequest(endpoint)
+	req := params.NewRequest(endpoint, settings.URLScheme, settings.URLHost)
 
 	unescaped, err := url.QueryUnescape(req.URL.String())
 	if err != nil {
 		adjust.Fail("Failed to unescape url.")
 	}
 
-	verbose := c.Bool("verbose")
+	verbose := context.Bool("verbose")
 	if verbose {
 		adjust.Notify(fmt.Sprintf("Requesting URL: %s\n", unescaped))
 	}
@@ -68,15 +67,15 @@ func performKPIServiceRequest(endpoint string, c *cli.Context) {
 		handleResponse(res)
 	}
 
-	if c.Bool("csv") || c.String("file") != "" {
+	if context.Bool("csv") || context.String("file") != "" {
 		body, err := ioutil.ReadAll(res.Body)
 		if err != nil {
 			adjust.Fail("Could not read CSV response from KPI Service.")
 		}
 
 		w := os.Stdout
-		if c.String("file") != "" {
-			w, err = os.OpenFile(c.String("file"), os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0666)
+		if context.String("file") != "" {
+			w, err = os.OpenFile(context.String("file"), os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0666)
 			if err != nil {
 				adjust.Fail(err.Error())
 			}
@@ -143,6 +142,6 @@ func handleResponseVerbose(res *http.Response) {
 
 func validateContext(c *cli.Context) {
 	if c.String("start") == "" && c.String("end") != "" || c.String("start") != "" && c.String("end") == "" {
-		adjust.Fail("--start and --end dates must be both given.")
+		adjust.Fail("--start and --end dates must be given both.")
 	}
 }

@@ -25,7 +25,7 @@ type Params struct {
 	UserToken   string
 }
 
-func NewParams(session *adjust.Session, context *cli.Context) (*Params, error) {
+func NewParams(config *adjust.Config, context *cli.Context) (*Params, error) {
 	res := &Params{
 		UserToken:   session.UserToken,
 		AppTokens:   commaSeparatedParam(context, "app_tokens"),
@@ -42,8 +42,8 @@ func NewParams(session *adjust.Session, context *cli.Context) (*Params, error) {
 	return res, nil
 }
 
-func (params *Params) NewRequest(endpoint string) *http.Request {
-	req, err := http.NewRequest("GET", urlFromParams(endpoint, params).String(), nil)
+func (params *Params) NewRequest(endpoint string, scheme string, host string) *http.Request {
+	req, err := http.NewRequest("GET", buildURL(endpoint, scheme, host, params).String(), nil)
 	if err != nil {
 		adjust.Fail("Failed to build URL.")
 	}
@@ -55,7 +55,7 @@ func (params *Params) NewRequest(endpoint string) *http.Request {
 	return req
 }
 
-func urlFromParams(endpoint string, params *Params) *url.URL {
+func buildURL(endpoint string, scheme string, host string, params *Params) *url.URL {
 	path := URLPath
 	appendTrackerFilters := true
 	q := url.Values{}
@@ -89,8 +89,8 @@ func urlFromParams(endpoint string, params *Params) *url.URL {
 	}
 
 	return &url.URL{
-		Scheme:   adjust.URLScheme,
-		Host:     adjust.URLHost,
+		Scheme:   scheme,
+		Host:     host,
 		Path:     path,
 		RawQuery: q.Encode(),
 	}

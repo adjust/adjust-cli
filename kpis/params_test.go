@@ -73,7 +73,7 @@ func TestURL(t *testing.T) {
 	}
 
 	for _, tc := range cases {
-		actual := tc.Params.NewRequest(tc.Endpoint).URL.String()
+		actual := tc.Params.NewRequest(tc.Endpoint, "https", "api.adjust.com").URL.String()
 
 		if actual != tc.Expected {
 			fail(t, "URL test failed:", actual, tc.Expected)
@@ -83,7 +83,7 @@ func TestURL(t *testing.T) {
 
 func TestHeader(t *testing.T) {
 	params := Params{UserToken: "my-user-token"}
-	req := params.NewRequest("deliverables")
+	req := params.NewRequest("deliverables", "", "")
 
 	acceptHeader := "text/csv"
 	if v := req.Header.Get("Accept"); v != acceptHeader {
