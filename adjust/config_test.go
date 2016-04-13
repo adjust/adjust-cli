@@ -106,3 +106,23 @@ func TestWriteConfigOnlyAppTokens(t *testing.T) {
 
 	assertConfig(t, written, expectations)
 }
+
+func TestEditConfig(t *testing.T) {
+	defer cleanFixtures()
+
+	config := &Config{AppTokens: []string{"metodi", "stefan"}}
+	config.WriteConfig("fixtures/config_write.yaml")
+
+	config = ReadConfig("fixtures/config_write.yaml")
+	config.AppTokens = []string{"first", "second"}
+	config.WriteConfig("fixtures/config_write.yaml")
+
+	expectations := map[string]string{
+		"user_token": "",
+		"app_token":  "",
+		"app_token1": "first",
+		"app_token2": "second",
+	}
+
+	assertConfig(t, config, expectations)
+}
