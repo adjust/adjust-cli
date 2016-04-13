@@ -1,10 +1,8 @@
 ## TODOs
 
-  - Should have a --csv argument to save report to a file;
-  - append with human readable names to the Requests;
-  - make it possible through the configuration to use different instance of the
-    API - e.g. api-qa-2.adjust.com
-  - implement at least `app_token` in `~/.adjustrc` and maybe both
+  - add completion
+  - rename params and help messages - add aliases, consider default values
+  - extend the test suite with integration tests
   - consider default action and aliases to the commands and default values for
     the params
 
