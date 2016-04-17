@@ -3,11 +3,11 @@
 This is an UNIX command line utility that streamlines your access to the Adjust
 APIs. Use this tool for a quick access to all Adjust apps and KPIs data you run.
 
-## [WIP] Installation
+### [WIP] Installation
 
 Currently the command line utility is distributed for Mac OS and UNIX systems.
 
-### Mac OS X
+#### Mac OS X
 
 The recommended way to install on Mac OS X is via Homebrew.
 
@@ -20,7 +20,7 @@ go get github.com/adjust/adjust-cli
 
 Alternatively, just follow the general UNIX instructions below.
 
-### UNIX
+#### UNIX
 
 Copy-paste this on your terminal.
 
@@ -28,14 +28,14 @@ Copy-paste this on your terminal.
 wget "https://github.com/adjust/adjust-cli/blob/master/adjust-cli?raw=true" && mv adjust-cli /usr/local/bin/adjust
 ```
 
-## Commands
+### Commands
 
 The adjust tool has three commands: `adjust config`, `adjust deliverables` and `adjust cohorts`. You can see details for
 each of these by typing for example: `adjust deliverables --help`. There's also general help: `adjust --help`.
 
 Let's run through each of the commands with a few examples.
 
-### Config
+#### Config
 
 To access the adjust APIs you'll need to authorize with your user token. You can obtain it from the accounts settings on
 your adjust dashboard.
@@ -58,7 +58,7 @@ too like this:
 adjust config --app-tokens my-app-token1,my-app-token2
 ```
 
-### Deliverables
+#### Deliverables
 
 Accessing your tracking data is done via the KPI Service API. While the adjust tool provides extensive inline help on
 the `deliverables` and `cohorts` commands, you're still encouraged to keep track of the [KPI Service
@@ -99,7 +99,7 @@ adjust cohorts -a ckrgvqfu1nx3 -k retained_users
 
 Again `adjust cohorts --help` will give you more details.
 
-#### Output Format
+### Output Format
 
 By default the adjust tool prints results in a table-formatted output to the terminal. You can change that to printing
 CSV using the `--csv` flag on every `deliverables` or `cohorts` request. This might be useful if you wish, for example,
@@ -110,7 +110,7 @@ Furthermore, you can directly save the CSV output to a file on your computer by 
 There's also a `--verbose` flag, which prints more details along the execution and the `--url-only` which only prints
 the API URL for the request, but doesn't execute it.
 
-## TODOs
+### TODOs
 
   - Add and distribute tab completion.
   - Provide Windows support.
