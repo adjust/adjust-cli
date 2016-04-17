@@ -112,10 +112,8 @@ Finally there's a `--verbose` flag given too, which you can use to print more de
 ## TODOs
 
   - Add and distribute tab completion.
-  - -- rename params and help messages - add aliases, consider default values
   - -- extend the test suite with integration tests
-  - -- consider default action and aliases to the commands and default values for
-    the params
+  - -- add events as param
   - Provide Windows support.
   - Implement basic 'smart' default groupings - e.g. group by network for single app-token requests and by
     `apps,networks` for multiple apps.

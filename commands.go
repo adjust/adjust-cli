@@ -12,22 +12,22 @@ var GlobalFlags = []cli.Flag{}
 
 var ConfigFlags = []cli.Flag{
 	cli.StringFlag{
-		Name:  "user_token, u",
+		Name:  "user-token, u",
 		Usage: "Your adjust user token, available from your Dashboard.",
 	},
 	cli.StringFlag{
-		Name:  "app_tokens",
+		Name:  "app-tokens",
 		Usage: "A comma-separated list of your adjust app tokens.",
 	},
 	cli.StringFlag{
-		Name:  "app_token",
-		Usage: "Setup an app token for your requests. If `--app_tokens` is also given, that takes precedence for all requests that support mutiple apps",
+		Name:  "app-token",
+		Usage: "Setup an app token for your requests. If `--app-tokens` is also given, that takes precedence for all requests that support mutiple apps",
 	},
 }
 
 var KPIsFlags = []cli.Flag{
 	cli.StringFlag{
-		Name:  "app_tokens, a",
+		Name:  "app-tokens, a",
 		Usage: "The app token for the request",
 	},
 	cli.StringFlag{
@@ -35,21 +35,21 @@ var KPIsFlags = []cli.Flag{
 		Usage: "If a tracker token is given, tracker filtering will be applied on the request",
 	},
 	cli.StringFlag{
-		Name:  "os_names, o",
-		Usage: "OS Name filtering. Example: `--os_names 'ios,android'`",
+		Name:  "platforms, p",
+		Usage: "OS Name filtering. Example: `--platforms ios,android`",
 	},
 	cli.StringFlag{
 		Name:  "countries, c",
-		Usage: "Country filtering using ISO Alpha 2 country codes. Example: `--countries 'us,fr'`",
+		Usage: "Country filtering using ISO Alpha 2 country codes. Example: `--countries us,fr`",
 	},
 	cli.StringFlag{
-		Name:  "device_types, d",
-		Usage: "Device Type filtering. Example: `--device_types phone`",
+		Name:  "devices, d",
+		Usage: "Device Type filtering. Example: `--devices phone,tablet`",
 	},
 	cli.StringFlag{
-		Name:  "grouping, g",
+		Name:  "group, g",
 		Value: "network",
-		Usage: "Grouping for the data. Example: `--grouping apps,networks,campaigns`",
+		Usage: "Grouping for the data. Example: `--group apps,networks,campaigns`",
 	},
 	cli.StringFlag{
 		Name:  "file",
@@ -88,21 +88,25 @@ var CohortsKPIsFlag = cli.StringFlag{
 var Commands = []cli.Command{
 	{
 		Name:   "config",
-		Usage:  "configure user_token, app_tokens and other options to adjust",
+		Usage:  "configure user-token and app-tokens options to adjust",
 		Action: command.CmdConfig,
 		Flags:  ConfigFlags,
 	},
 	{
-		Name:   "deliverables",
-		Usage:  "installs, clicks, sessions, events etc. data.",
-		Action: command.CmdDeliverables,
-		Flags:  append(KPIsFlags, DeliverablesKPIsFlag),
+		Name:        "deliverables",
+		Aliases:     []string{"d"},
+		Usage:       "deliverables data for your apps.",
+		Action:      command.CmdDeliverables,
+		Description: "Deliverable KPIs are installs, clicks, sessions, DAU, events and so on. Check https://docs.adjust.com/en/kpi-service/",
+		Flags:       append(KPIsFlags, DeliverablesKPIsFlag),
 	},
 	{
-		Name:   "cohorts",
-		Usage:  "get cohorts data.",
-		Action: command.CmdCohorts,
-		Flags:  append(KPIsFlags, CohortsKPIsFlag),
+		Name:        "cohorts",
+		Aliases:     []string{"c"},
+		Usage:       "cohorts data for your apps.",
+		Action:      command.CmdCohorts,
+		Description: "Cohort KPIs are Retained Users, Lifetime Value and so on. Check https://docs.adjust.com/en/kpi-service/",
+		Flags:       append(KPIsFlags, CohortsKPIsFlag),
 	},
 }
 

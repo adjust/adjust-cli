@@ -28,15 +28,15 @@ type Params struct {
 func NewParams(endpoint string, config *adjust.Config, context *cli.Context) (*Params, error) {
 	res := &Params{
 		UserToken:   config.UserToken,
-		AppTokens:   appTokens(endpoint, config, adjust.CommaSeparatedParam(context, "app_tokens")),
+		AppTokens:   appTokens(endpoint, config, adjust.CommaSeparatedParam(context, "app-tokens")),
 		Trackers:    commaSeparatedParam(context, "trackers"),
 		KPIs:        commaSeparatedParam(context, "kpis"),
-		OSNames:     commaSeparatedParam(context, "os_names"),
+		OSNames:     commaSeparatedParam(context, "platforms"),
 		Countries:   commaSeparatedParam(context, "countries"),
-		DeviceTypes: commaSeparatedParam(context, "device_types"),
+		DeviceTypes: commaSeparatedParam(context, "devices"),
 		Start:       context.String("start"),
 		End:         context.String("end"),
-		Grouping:    commaSeparatedParam(context, "grouping"),
+		Grouping:    commaSeparatedParam(context, "group"),
 	}
 
 	return res, nil

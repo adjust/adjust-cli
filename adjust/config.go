@@ -47,14 +47,14 @@ type Config struct {
 }
 
 func NewConfig(c *cli.Context) *Config {
-	config := &Config{AppTokens: commaSeparatedParam(c, "app_tokens")}
+	config := &Config{AppTokens: commaSeparatedParam(c, "app-tokens")}
 
-	if c.String("user_token") != "" {
-		config.UserToken = c.String("user_token")
+	if c.String("user-token") != "" {
+		config.UserToken = c.String("user-token")
 	}
 
-	if c.String("app_token") != "" {
-		config.AppToken = c.String("app_token")
+	if c.String("app-token") != "" {
+		config.AppToken = c.String("app-token")
 	}
 
 	return config
