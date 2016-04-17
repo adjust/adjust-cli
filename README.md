@@ -107,13 +107,12 @@ to pipe the output for further processing.
 
 Furthermore, you can directly save the CSV output to a file on your computer by passing `--file path/to/file`.
 
-Finally there's a `--verbose` flag given too, which you can use to print more details on the execution.
+There's also a `--verbose` flag, which prints more details along the execution and the `--url-only` which only prints
+the API URL for the request, but doesn't execute it.
 
 ## TODOs
 
   - Add and distribute tab completion.
-  - -- extend the test suite with integration tests
-  - -- add events as param
   - Provide Windows support.
   - Implement basic 'smart' default groupings - e.g. group by network for single app-token requests and by
     `apps,networks` for multiple apps.

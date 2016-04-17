@@ -81,16 +81,28 @@ var KPIsFlags = []cli.Flag{
 	},
 }
 
-var DeliverablesKPIsFlag = cli.StringFlag{
-	Name:  "kpis, k",
-	Value: "installs,clicks,sessions",
-	Usage: "The KPIs for the request.",
+var DeliverablesKPIsFlag = []cli.Flag{
+	cli.StringFlag{
+		Name:  "kpis, k",
+		Value: "installs,clicks,sessions",
+		Usage: "The KPIs for the request.",
+	},
 }
 
-var CohortsKPIsFlag = cli.StringFlag{
-	Name:  "kpis, k",
-	Value: "retained_users",
-	Usage: "The KPIs for the request.",
+var CohortsKPIsFlag = []cli.Flag{
+	cli.StringFlag{
+		Name:  "kpis, k",
+		Value: "retained_users",
+		Usage: "The KPIs for the request.",
+	},
+	cli.StringFlag{
+		Name:  "period",
+		Usage: "Period for the cohort report - day/week/month",
+	},
+	cli.StringFlag{
+		Name:  "events, e",
+		Usage: "Comma-separated list of event tokens for event-based cohorts",
+	},
 }
 
 var Commands = []cli.Command{
@@ -106,7 +118,7 @@ var Commands = []cli.Command{
 		Usage:       "deliverables data for your apps.",
 		Action:      command.CmdDeliverables,
 		Description: "Deliverable KPIs are installs, clicks, sessions, DAU, events and so on. Check https://docs.adjust.com/en/kpi-service/",
-		Flags:       append(KPIsFlags, DeliverablesKPIsFlag),
+		Flags:       append(KPIsFlags, DeliverablesKPIsFlag...),
 	},
 	{
 		Name:        "cohorts",
@@ -114,7 +126,7 @@ var Commands = []cli.Command{
 		Usage:       "cohorts data for your apps.",
 		Action:      command.CmdCohorts,
 		Description: "Cohort KPIs are Retained Users, Lifetime Value and so on. Check https://docs.adjust.com/en/kpi-service/",
-		Flags:       append(KPIsFlags, CohortsKPIsFlag),
+		Flags:       append(KPIsFlags, CohortsKPIsFlag...),
 	},
 }
 

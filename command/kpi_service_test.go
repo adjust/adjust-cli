@@ -65,6 +65,10 @@ func TestKPICommands(t *testing.T) {
 			"c -a abc",
 			"https://api.adjust.com/kpis/v1/abc/cohorts.csv?grouping=network&kpis=retained_users",
 		},
+		TestCase{
+			"cohorts -a abc --events abc27s --period week",
+			"https://api.adjust.com/kpis/v1/abc/cohorts.csv?events=abc27s&grouping=network&kpis=retained_users&period=week",
+		},
 	}
 
 	for _, tc := range cases {

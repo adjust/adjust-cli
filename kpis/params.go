@@ -20,6 +20,8 @@ type Params struct {
 	Countries   []string
 	DeviceTypes []string
 	Grouping    []string
+	Events      []string
+	Period      string
 	Start       string
 	End         string
 	UserToken   string
@@ -39,6 +41,11 @@ func NewParams(endpoint string, config *adjust.Config, context *cli.Context) (*P
 		End:         context.String("end"),
 		Grouping:    commaSeparatedParam(context, "group"),
 		Sandbox:     context.Bool("sandbox"),
+	}
+
+	if endpoint == "cohorts" {
+		res.Events = commaSeparatedParam(context, "events")
+		res.Period = context.String("period")
 	}
 
 	return res, nil
@@ -99,6 +106,8 @@ func buildURL(endpoint string, scheme string, host string, params *Params) *url.
 	appendParam(q, "os_names", params.OSNames)
 	appendParam(q, "countries", params.Countries)
 	appendParam(q, "device_types", params.DeviceTypes)
+	appendParam(q, "events", params.Events)
+	addParam(q, "period", params.Period)
 	addParam(q, "start_date", params.Start)
 	addParam(q, "end_date", params.End)
 

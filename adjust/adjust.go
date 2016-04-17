@@ -26,10 +26,6 @@ func Notify(message string) {
 	fmt.Fprintf(os.Stdout, "%s\n", message)
 }
 
-func Print(message string) {
-	fmt.Fprintf(os.Stdout, "%s", message)
-}
-
 func DefaultHeaders(userToken string) *http.Header {
 	res := http.Header{}
 	res.Add("Authorization", fmt.Sprintf("Token token=%s", userToken))
