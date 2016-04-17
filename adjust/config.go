@@ -87,7 +87,7 @@ func ReadConfig(configFilename string) *Config {
 	return res
 }
 
-func (config *Config) WriteConfig(configFilename string) {
+func (config *Config) WriteConfig(configFilename string) *Config {
 	persisted := ReadConfig(configFilename)
 
 	if config.UserToken != "" {
@@ -108,17 +108,9 @@ func (config *Config) WriteConfig(configFilename string) {
 	}
 	buf := bufio.NewWriter(w)
 
-	if persisted.UserToken != "" {
-		_, err = fmt.Fprintf(buf, "user_token: %s\n", persisted.UserToken)
-	}
-
-	if persisted.AppToken != "" {
-		_, err = fmt.Fprintf(buf, "app_token: %s\n", persisted.AppToken)
-	}
-
-	if persisted.AppTokens != nil {
-		_, err = fmt.Fprintf(buf, "app_tokens: %s\n", strings.Join(persisted.AppTokens, ","))
-	}
+	printConfig(buf, persisted)
 
 	buf.Flush()
+
+	return persisted
 }

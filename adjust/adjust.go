@@ -1,6 +1,7 @@
 package adjust
 
 import (
+	"bufio"
 	"fmt"
 	"net/http"
 	"os"
@@ -44,4 +45,28 @@ func commaSeparatedParam(context *cli.Context, paramName string) []string {
 	}
 
 	return strings.Split(context.String(paramName), ",")
+}
+
+func PrintConfig(buf *bufio.Writer, conf *Config) {
+	printConfig(buf, conf)
+}
+
+func printConfig(buf *bufio.Writer, conf *Config) {
+	var err error
+
+	if conf.UserToken != "" {
+		_, err = fmt.Fprintf(buf, "user_token: %s\n", conf.UserToken)
+	}
+
+	if conf.AppToken != "" {
+		_, err = fmt.Fprintf(buf, "app_token: %s\n", conf.AppToken)
+	}
+
+	if conf.AppTokens != nil {
+		_, err = fmt.Fprintf(buf, "app_tokens: %s\n", strings.Join(conf.AppTokens, ","))
+	}
+
+	if err != nil {
+		Fail(err.Error())
+	}
 }
