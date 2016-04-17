@@ -28,7 +28,7 @@ func NewSettings() *Settings {
 	return &Settings{
 		ConfigFilename: fmt.Sprintf("%s/%s", configPath, configFilename),
 		URLScheme:      getenv("ADJUST_CLI_URL_SCHEME", urlScheme),
-		URLHost:        getenv("ADJUST_CLI_URL_Host", urlHost),
+		URLHost:        getenv("ADJUST_CLI_URL_HOST", urlHost),
 	}
 }
 
