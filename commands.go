@@ -71,6 +71,10 @@ var KPIsFlags = []cli.Flag{
 		Name:  "end",
 		Usage: "The end date of the request period in format YYYY-MM-DD. Example: `--end 2015-01-31`.",
 	},
+	cli.BoolFlag{
+		Name:  "sandbox",
+		Usage: "Return only sandbox data.",
+	},
 }
 
 var DeliverablesKPIsFlag = cli.StringFlag{

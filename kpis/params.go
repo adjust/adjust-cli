@@ -23,6 +23,7 @@ type Params struct {
 	Start       string
 	End         string
 	UserToken   string
+	Sandbox     bool
 }
 
 func NewParams(endpoint string, config *adjust.Config, context *cli.Context) (*Params, error) {
@@ -37,6 +38,7 @@ func NewParams(endpoint string, config *adjust.Config, context *cli.Context) (*P
 		Start:       context.String("start"),
 		End:         context.String("end"),
 		Grouping:    commaSeparatedParam(context, "group"),
+		Sandbox:     context.Bool("sandbox"),
 	}
 
 	return res, nil
@@ -102,6 +104,10 @@ func buildURL(endpoint string, scheme string, host string, params *Params) *url.
 
 	if appendTrackerFilters {
 		appendParam(q, "tracker_filter", params.Trackers)
+	}
+
+	if params.Sandbox {
+		q.Add("sandbox", "true")
 	}
 
 	return &url.URL{
