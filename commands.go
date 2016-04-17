@@ -75,6 +75,10 @@ var KPIsFlags = []cli.Flag{
 		Name:  "sandbox",
 		Usage: "Return only sandbox data.",
 	},
+	cli.BoolFlag{
+		Name:  "url-only",
+		Usage: "Do not query the API, instead only print generated URL for the request.",
+	},
 }
 
 var DeliverablesKPIsFlag = cli.StringFlag{

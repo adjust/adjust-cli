@@ -51,6 +51,11 @@ func performKPIServiceRequest(endpoint string, context *cli.Context) {
 		adjust.Notify(fmt.Sprintf("Requesting URL: %s\n", unescaped))
 	}
 
+	if context.Bool("url-only") {
+		adjust.Notify(unescaped)
+		adjust.Success()
+	}
+
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		if verbose {
