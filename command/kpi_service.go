@@ -59,7 +59,7 @@ func performKPIServiceRequest(endpoint string, context *cli.Context) {
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		if verbose {
-			adjust.Fail(err.Error())
+			adjust.Faile(err)
 		} else {
 			adjust.Fail("Could not connect to the adjust API.")
 		}
@@ -82,14 +82,14 @@ func performKPIServiceRequest(endpoint string, context *cli.Context) {
 		if context.String("file") != "" {
 			w, err = os.OpenFile(context.String("file"), os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0666)
 			if err != nil {
-				adjust.Fail(err.Error())
+				adjust.Faile(err)
 			}
 		}
 
 		buf := bufio.NewWriter(w)
 		_, err = buf.Write(body)
 		if err != nil {
-			adjust.Fail(err.Error())
+			adjust.Faile(err)
 		}
 		buf.Flush()
 
@@ -129,11 +129,11 @@ func handleResponse(res *http.Response) {
 
 func handleResponseVerbose(res *http.Response) {
 	if res.StatusCode >= 500 {
-		adjust.Fail(fmt.Sprintf("KPI Service error %s encountered", res.Status))
+		adjust.Failf("KPI Service error %s encountered", res.Status)
 	}
 
 	if res.StatusCode >= 400 {
-		adjust.Error(fmt.Sprintf("Incorrect request to the KPI Service: %s", res.Status))
+		adjust.Error("Incorrect request to the KPI Service: %s", res.Status)
 		text, err := ioutil.ReadAll(res.Body)
 		if err != nil {
 			adjust.Fail("Could not parse KPI Service response.")
@@ -142,7 +142,7 @@ func handleResponseVerbose(res *http.Response) {
 	}
 
 	if res.StatusCode != 200 {
-		adjust.Fail(fmt.Sprintf("Unexpected HTTP response from the KPI Service: %s", res.Status))
+		adjust.Failf("Unexpected HTTP response from the KPI Service: %s", res.Status)
 	}
 }
 
