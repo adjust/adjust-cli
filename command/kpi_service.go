@@ -99,14 +99,8 @@ func performKPIServiceRequest(endpoint string, context *cli.Context) {
 	csvReader := csv.NewReader(res.Body)
 	table, err := tablewriter.NewCSVReader(os.Stdout, csvReader, true)
 	table.SetAlignment(2)
-
-	// table.SetHeader([]string{"Name", "Sign", "Rating"})
 	table.SetBorder(false)
-
-	// for _, v := range data {
-	//	table.Append(v)
-	// }
-	table.Render() // Send output
+	table.Render()
 }
 
 func handleResponse(res *http.Response) {
