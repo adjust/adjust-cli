@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/adjust/adjust-cli/adjust"
 	"github.com/adjust/adjust-cli/command"
 	"github.com/codegangsta/cli"
@@ -131,5 +129,5 @@ var Commands = []cli.Command{
 }
 
 func CommandNotFound(c *cli.Context, command string) {
-	adjust.Fail(fmt.Sprintf("%s: '%s' is not a %s command. See '%s --help'.\n", c.App.Name, command, c.App.Name, c.App.Name))
+	adjust.Failf("%s: '%s' is not a %s command. See '%s --help'.\n", c.App.Name, command, c.App.Name, c.App.Name)
 }

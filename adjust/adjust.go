@@ -15,12 +15,22 @@ func Success() {
 }
 
 func Fail(message string) {
-	Error(message)
+	Error("%s", message)
 	os.Exit(2)
 }
 
-func Error(message string) {
-	fmt.Fprintf(os.Stderr, "Error: %s\n", message)
+func Faile(err error) {
+	Error("%s", err.Error())
+	os.Exit(2)
+}
+
+func Failf(format string, v ...interface{}) {
+	Error(format, v...)
+	os.Exit(2)
+}
+
+func Error(format string, v ...interface{}) {
+	fmt.Fprintf(os.Stderr, "Error: %s\n", fmt.Sprintf(format, v...))
 }
 
 func Notify(message string) {
