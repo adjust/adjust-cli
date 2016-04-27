@@ -1,2 +1,4 @@
 *.swp
 builds/
+.go
+Gofile.lock
