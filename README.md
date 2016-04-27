@@ -3,30 +3,10 @@
 This is an UNIX command line utility that streamlines your access to the Adjust
 APIs. Use this tool for a quick access to all Adjust apps and KPIs data you run.
 
-### [WIP] Installation
+### Installation
 
-Currently the command line utility is distributed for Mac OS and UNIX systems.
-
-#### Mac OS X
-
-The recommended way to install on Mac OS X is via Homebrew.
-
-~~brew tap adjust/homebrew~~
-~~brew install adjust/homebrew/adjust~~
-
-```
-go get github.com/adjust/adjust-cli
-```
-
-Alternatively, just follow the general UNIX instructions below.
-
-#### UNIX
-
-Copy-paste this on your terminal.
-
-```
-wget "https://github.com/adjust/adjust-cli/blob/master/adjust-cli?raw=true" && mv adjust-cli /usr/local/bin/adjust
-```
+[DISCLAIMER] This software is still in pre-release mode, and complete
+installation guides are still being developed.
 
 ### Commands
 
