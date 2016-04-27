@@ -4,6 +4,10 @@ use strict;
 use warnings;
 use 5.018;
 
+use JSON;
+use LWP::UserAgent;
+use autodie;
+
 my $os_arch = [
     "darwin    386",
     "darwin    amd64",
@@ -34,11 +38,39 @@ my $os_arch = [
     "windows   amd64"
 ];
 
-mkdir 'builds';
+my $json;
 
-foreach my $platform (@$os_arch) {
-    my ( $os, $arch ) = split /\s+/, $platform;
-    $ENV{'GOOS'}   = $os;
-    $ENV{'GOARCH'} = $arch;
-    system("go build -v -o builds/adjust_cli_${os}_${arch}");
+my $ua   = LWP::UserAgent->new;
+my $resp = $ua->get('https://api.github.com/repos/adjust/adjust-cli/tags');
+
+if ( $resp->is_success ) {
+    $json = decode_json( $resp->decoded_content );
+} else {
+    die $resp->status_line;
 }
+
+my $build_base   = 'builds';
+my $build_dir    = "$build_base/$json->[0]->{name}/";
+my $build_latest = "$build_base/latest";
+
+mkdir $build_base;
+
+if ( -d $build_dir ) {
+    say "nothing to do";
+} else {
+    mkdir $build_dir;
+    eval {
+        foreach my $platform (@$os_arch) {
+            my ( $os, $arch ) = split /\s+/, $platform;
+            $ENV{'GOOS'}   = $os;
+            $ENV{'GOARCH'} = $arch;
+            system("go build -v -o $build_dir/adjust_cli_${os}_${arch}") == 0 or die $!;
+        }
+    };
+    if ($@) {
+        rmdir $build_dir;
+        die $@;
+    }
+}
+
+symlink $build_dir, $build_latest;
