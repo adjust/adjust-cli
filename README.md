@@ -8,6 +8,14 @@ APIs. Use this tool for a quick access to all Adjust apps and KPIs data you run.
 [DISCLAIMER] This software is still in pre-release mode, and complete
 installation guides are still being developed.
 
+#### Mac OS X
+
+Install using homebrew by typing this line in your terminal:
+
+```
+brew tap adjust/tap && brew install adjust
+```
+
 ### Commands
 
 The adjust tool has three commands: `adjust config`, `adjust deliverables` and `adjust cohorts`. You can see details for
